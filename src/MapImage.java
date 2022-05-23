@@ -7,7 +7,7 @@ import java.io.IOException;
 
 
 public class MapImage extends JPanel {
-    static enum Mode {
+    public static enum Mode {
         DEFAULT,
         AUTO,
         REGION,

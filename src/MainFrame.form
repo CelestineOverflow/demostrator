@@ -108,16 +108,6 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="5eb03" class="javax.swing.JTextField" binding="batteryTextField" default-binding="true">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties>
-              <text value="Battery"/>
-            </properties>
-          </component>
           <component id="73947" class="javax.swing.JLabel">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -126,21 +116,11 @@
               <text value="%"/>
             </properties>
           </component>
-          <component id="a63e" class="javax.swing.JProgressBar" binding="progressBar1" default-binding="true">
+          <component id="a63e" class="javax.swing.JProgressBar" binding="batteryProgressBar">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
-          </component>
-          <component id="c8005" class="javax.swing.JTextField" default-binding="true">
-            <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties>
-              <text value="BinLevel"/>
-            </properties>
           </component>
           <component id="62b00" class="javax.swing.JLabel">
             <constraints>
@@ -150,35 +130,49 @@
               <text value="%"/>
             </properties>
           </component>
-          <component id="82e05" class="javax.swing.JProgressBar" default-binding="true">
+          <component id="82e05" class="javax.swing.JProgressBar" binding="binProgressBar">
             <constraints>
               <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
           </component>
-          <component id="2686f" class="javax.swing.JTextField" default-binding="true">
-            <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties>
-              <text value="Jobs"/>
-            </properties>
-          </component>
-          <component id="d0f49" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="%"/>
-            </properties>
-          </component>
-          <component id="bd395" class="javax.swing.JProgressBar" default-binding="true">
+          <component id="bd395" class="javax.swing.JProgressBar" binding="jobProgressBar">
             <constraints>
               <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
+          </component>
+          <component id="a2131" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Current Jobs"/>
+            </properties>
+          </component>
+          <component id="bcfe5" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="BinLevel"/>
+            </properties>
+          </component>
+          <component id="d7be4" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Battery"/>
+            </properties>
+          </component>
+          <component id="17be4" class="javax.swing.JLabel" binding="jobText" custom-create="true">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Label"/>
+            </properties>
           </component>
         </children>
       </grid>

@@ -1,11 +1,12 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class StatsWorker {
-    private ArrayList<RobotValues> robotsValues;
+public class RobotDatabase {
+    private ArrayList<RobotInstance> robotInstances;
     private Random random;
-    public StatsWorker(){
-        robotsValues = new ArrayList<RobotValues>();
+    
+    public RobotDatabase(){
+        robotInstances = new ArrayList<RobotInstance>();
     }
     public void generateValues(ArrayList<String> names){
         for(String name: names){
@@ -16,7 +17,7 @@ public class StatsWorker {
         int battery = getRandInRange(0, 100);
         int binLevel = getRandInRange(0, 100);
         Job job = new Job("Empty", 0);
-        robotsValues.add(new RobotValues(name, battery, binLevel, job));
+        robotInstances.add(new RobotInstance(name, battery, binLevel, job));
     }
     public int getRandInRange(int from, int to){
         if(random == null){
@@ -24,7 +25,7 @@ public class StatsWorker {
         }
         return random.nextInt((to - from) + 1) + from;
     }
-    public RobotValues getRobotValues(int selected){
-        return robotsValues.get(selected);
+    public RobotInstance getRobotValues(int selected){
+        return robotInstances.get(selected);
     }
 }

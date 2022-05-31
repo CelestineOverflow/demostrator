@@ -1,12 +1,16 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 
-public class MainFrame extends JFrame{
+public class MainFrame extends JFrame {
+
     public static ArrayList<String> robotNames;
-    private StatsWorker statsWorker;
+    private RobotDatabase robotDatabase;
     private JPanel ModeSelect;
     private JButton AUTOButton;
     private JButton REGIONButton;
@@ -23,11 +27,17 @@ public class MainFrame extends JFrame{
     private JProgressBar binProgressBar;
     private JProgressBar jobProgressBar;
     private JLabel jobText;
+    private JCheckBox setScheduleCheckBox;
+    private JLabel Time;
+    private JComboBox hour;
+    private JComboBox minute;
+    private int currentRobotId;
+    private Time scheduleTime;
 
     public MainFrame() {
         initNames();
-        statsWorker = new StatsWorker();
-        statsWorker.generateValues(robotNames);
+        robotDatabase = new RobotDatabase();
+        robotDatabase.generateValues(robotNames);
         setContentPane(all);
         setSize(600, 900);
         setResizable(false);
@@ -38,7 +48,12 @@ public class MainFrame extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 mapImage.setMode(MapImage.Mode.AUTO);
-                dialogBox("Job Sent Successfully");
+                if (scheduleTime == null) {
+                    InstructionController.getInstance().addInstruction("START AUTO", robotDatabase.getRobotValues(currentRobotId));
+                } else {
+                    InstructionController.getInstance().addInstruction("START AUTO", robotDatabase.getRobotValues(currentRobotId), scheduleTime);
+                }
+                InstructionController.getInstance().printInstructionToConsole();
             }
         });
         REGIONButton.addActionListener(new ActionListener() {
@@ -46,6 +61,13 @@ public class MainFrame extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 mapImage.setMode(MapImage.Mode.REGION);
                 dialogBox("Please Select Regions");
+                mapImage.setMode(MapImage.Mode.AUTO);
+                if (scheduleTime == null) {
+                    InstructionController.getInstance().addInstruction("START REGION", robotDatabase.getRobotValues(currentRobotId));
+                } else {
+                    InstructionController.getInstance().addInstruction("START REGION", robotDatabase.getRobotValues(currentRobotId), scheduleTime);
+                }
+                InstructionController.getInstance().printInstructionToConsole();
             }
         });
         ROOMButton.addActionListener(new ActionListener() {
@@ -53,10 +75,16 @@ public class MainFrame extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 mapImage.setMode(MapImage.Mode.ROOM);
                 dialogBox("Please Select Rooms");
+                if (scheduleTime == null) {
+                    InstructionController.getInstance().addInstruction("START ROOM", robotDatabase.getRobotValues(currentRobotId));
+                } else {
+                    InstructionController.getInstance().addInstruction("START ROOM", robotDatabase.getRobotValues(currentRobotId), scheduleTime);
+                }
+                InstructionController.getInstance().printInstructionToConsole();
             }
         });
         settingsButton.addActionListener(new ActionListener() {
-            
+
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -71,15 +99,32 @@ public class MainFrame extends JFrame{
         selectRobot.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selected = selectRobot.getSelectedIndex();
-                System.out.printf("COMBO VALUE = %d\n", selected);
-                RobotValues robotValues= statsWorker.getRobotValues(selected);
+                currentRobotId = selectRobot.getSelectedIndex();
+                RobotInstance robotValues = robotDatabase.getRobotValues(currentRobotId);
                 batteryProgressBar.setValue(robotValues.getBattery());
                 binProgressBar.setValue(robotValues.getBinLevel());
                 jobProgressBar.setValue(robotValues.getJob().getJobCompleteness());
                 jobText.setText(robotValues.getJob().getJobType());
             }
         });
+
+        setScheduleCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == setScheduleCheckBox) {
+                    if (setScheduleCheckBox.isEnabled()) {
+                        setNewSchedule();
+                    } else {
+                        scheduleTime = null;
+                    }
+                }
+            }
+        });
+    }
+
+    private void setNewSchedule() {
+        scheduleTime = new Time(hour.getSelectedIndex(), minute.getSelectedIndex());
+        scheduleTime.printTime();
     }
 
     public static void main(String[] args) {
@@ -92,7 +137,17 @@ public class MainFrame extends JFrame{
         mainFrame.setVisible(true);
     }
 
-    private void createUIComponents() {// place custom component creation code here
+    private void createUIComponents() {// place custom component creation code here1
+        ArrayList<String> hourArray = new ArrayList<>();
+        ArrayList<String> minuteArray = new ArrayList<>();
+        for (int i = 0; i <= 23; i++) {
+            hourArray.add(String.valueOf(i));
+        }
+        for (int i = 0; i <= 59; i++) {
+            minuteArray.add(String.valueOf(i));
+        }
+        hour = new JComboBox(hourArray.toArray());
+        minute = new JComboBox(minuteArray.toArray());
         map = new JPanel();
         map.setLayout(new GridBagLayout());
         map.setBackground(Color.GRAY);
@@ -101,14 +156,17 @@ public class MainFrame extends JFrame{
         map.add(mapImage, c);
         jobText = new JLabel("Default");
     }
-    private void initNames(){
+
+    private void initNames() {
         robotNames = new ArrayList<>();
         robotNames.add("GLaDOS");
         robotNames.add("Arturito");
         robotNames.add("C-3PO");
         robotNames.add("DestroyerOfWorlds3000");
     }
-    private void dialogBox(String msg){
-        JOptionPane.showMessageDialog(this,msg);
-}
+
+    private void dialogBox(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
+    }
+
 }

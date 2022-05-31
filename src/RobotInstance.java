@@ -1,9 +1,9 @@
-public class RobotValues {
+public class RobotInstance {
     private String robotName;
     private int battery;
     private int binLevel;
     private Job job;
-    public RobotValues(String robotName, int battery, int binLevel, Job job){
+    public RobotInstance(String robotName, int battery, int binLevel, Job job){
         this.robotName = robotName;
         this.battery = battery;
         this.binLevel = binLevel;
@@ -23,5 +23,8 @@ public class RobotValues {
 
     public Job getJob() {
         return job;
+    }
+    public void SetJob(Job job){
+        this.job = job;
     }
 }

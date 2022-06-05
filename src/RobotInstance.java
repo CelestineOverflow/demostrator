@@ -1,3 +1,5 @@
+import RMI_Implementation.Job;
+
 public class RobotInstance {
     private String robotName;
     private int battery;

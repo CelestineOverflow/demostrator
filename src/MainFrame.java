@@ -1,10 +1,10 @@
+import RMI_Implementation.Time;
+
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class MainFrame extends JFrame {
@@ -34,7 +34,7 @@ public class MainFrame extends JFrame {
     private int currentRobotId;
     private Time scheduleTime;
 
-    public MainFrame() {
+    public MainFrame() throws RemoteException {
         initNames();
         robotDatabase = new RobotDatabase();
         robotDatabase.generateValues(robotNames);
@@ -53,7 +53,6 @@ public class MainFrame extends JFrame {
                 } else {
                     InstructionController.getInstance().addInstruction("START AUTO", robotDatabase.getRobotValues(currentRobotId), scheduleTime);
                 }
-                InstructionController.getInstance().printInstructionToConsole();
             }
         });
         REGIONButton.addActionListener(new ActionListener() {
@@ -67,7 +66,6 @@ public class MainFrame extends JFrame {
                 } else {
                     InstructionController.getInstance().addInstruction("START REGION", robotDatabase.getRobotValues(currentRobotId), scheduleTime);
                 }
-                InstructionController.getInstance().printInstructionToConsole();
             }
         });
         ROOMButton.addActionListener(new ActionListener() {
@@ -80,7 +78,6 @@ public class MainFrame extends JFrame {
                 } else {
                     InstructionController.getInstance().addInstruction("START ROOM", robotDatabase.getRobotValues(currentRobotId), scheduleTime);
                 }
-                InstructionController.getInstance().printInstructionToConsole();
             }
         });
         settingsButton.addActionListener(new ActionListener() {
@@ -127,7 +124,7 @@ public class MainFrame extends JFrame {
         scheduleTime.printTime();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RemoteException {
         try {
             UIManager.setLookAndFeel(
                     UIManager.getSystemLookAndFeelClassName());

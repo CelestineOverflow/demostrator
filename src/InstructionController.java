@@ -1,3 +1,7 @@
+import RMI_Implementation.InstructionSender;
+import RMI_Implementation.Job;
+import RMI_Implementation.Time;
+
 import java.util.ArrayList;
 
 public class InstructionController {
@@ -23,7 +27,10 @@ public class InstructionController {
     public void addInstruction(String instruction, RobotInstance robotInstance){
         try {
             instructionBuffer.add("instruction = " + instruction + " Instance = " + String.valueOf(robotInstance.getRobotName()) + " time = " +new Time().getString());
-            robotInstance.SetJob(new Job(instruction, 0));
+            Job job = new Job(instruction, 0);
+            robotInstance.SetJob(job);
+            InstructionSender.getInstance().sendJob(job);
+            InstructionSender.getInstance().getStats();
             System.out.println("Instruction Sent Successfully!");
         } catch (Exception e){
             System.out.println("Error Sending Instruction");

@@ -91,10 +91,7 @@
             </constraints>
             <properties>
               <model>
-                <item value="GLaDOS"/>
-                <item value="Arturito"/>
-                <item value="C-3PO"/>
-                <item value="DestroyerOfWorlds3000"/>
+                <item value="Bender"/>
               </model>
             </properties>
           </component>
@@ -197,7 +194,7 @@
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Time : "/>
+              <text value="Time:"/>
             </properties>
           </component>
           <component id="c5204" class="javax.swing.JComboBox" binding="hour" custom-create="true">

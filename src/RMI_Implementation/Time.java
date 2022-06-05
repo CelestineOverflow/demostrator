@@ -1,6 +1,9 @@
+package RMI_Implementation;
+
+import java.io.Serializable;
 import java.time.LocalTime;
 
-public class Time {
+public class Time implements Serializable {
     private int hour;
     private int minute;
     public Time(int hour, int minute){

@@ -1,3 +1,7 @@
+import RMI_Implementation.Job;
+import RMI_Implementation.Time;
+
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -8,12 +12,12 @@ public class RobotDatabase {
     public RobotDatabase(){
         robotInstances = new ArrayList<RobotInstance>();
     }
-    public void generateValues(ArrayList<String> names){
+    public void generateValues(ArrayList<String> names) throws RemoteException {
         for(String name: names){
             generateValue(name);
         }
     }
-    public void generateValue(String name){
+    public void generateValue(String name) throws RemoteException {
         int battery = getRandInRange(0, 100);
         int binLevel = getRandInRange(0, 100);
         Job job = new Job("Empty", 0);

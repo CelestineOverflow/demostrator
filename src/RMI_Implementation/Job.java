@@ -5,21 +5,24 @@ import java.io.Serializable;
 public class Job implements Serializable {
     private String jobType;
     private int jobCompleteness;
-    public Time getScheduleTime() {
-        return scheduleTime;
-    }
+    private final Time scheduleTime;
 
-    private Time scheduleTime;
     public Job(String jobType, int jobCompleteness, Time scheduleTime) {
         this.jobType = jobType;
         this.jobCompleteness = jobCompleteness;
         this.scheduleTime = scheduleTime;
     }
+
     public Job(String jobType, int jobCompleteness) {
         this.jobType = jobType;
         this.jobCompleteness = jobCompleteness;
         this.scheduleTime = new Time();
     }
+
+    public Time getScheduleTime() {
+        return scheduleTime;
+    }
+
     public String getJobType() {
         return jobType;
     }

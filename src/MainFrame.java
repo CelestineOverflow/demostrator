@@ -1,16 +1,25 @@
 import RMI_Implementation.Time;
+import loginAMQ.LoggerUI;
+import loginAMQ.LoginManager;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.jms.JMSException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.UnsupportedEncodingException;
 import java.rmi.RemoteException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public class MainFrame extends JFrame {
 
     public static ArrayList<String> robotNames;
-    private RobotDatabase robotDatabase;
+    //private RobotDatabase robotDatabase;
     private JPanel ModeSelect;
     private JButton AUTOButton;
     private JButton REGIONButton;
@@ -33,11 +42,10 @@ public class MainFrame extends JFrame {
     private JComboBox minute;
     private int currentRobotId;
     private Time scheduleTime;
+    private InstructionController instructionController;
 
-    public MainFrame() throws RemoteException {
-        initNames();
-        robotDatabase = new RobotDatabase();
-        robotDatabase.generateValues(robotNames);
+    public MainFrame() throws Exception {
+        initInstructionController();
         setContentPane(all);
         setSize(600, 900);
         setResizable(false);
@@ -49,9 +57,9 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 mapImage.setMode(MapImage.Mode.AUTO);
                 if (scheduleTime == null) {
-                    InstructionController.getInstance().addInstruction("START AUTO", robotDatabase.getRobotValues(currentRobotId));
+                    instructionController.addInstruction("START AUTO");
                 } else {
-                    InstructionController.getInstance().addInstruction("START AUTO", robotDatabase.getRobotValues(currentRobotId), scheduleTime);
+                    instructionController.addInstruction("START AUTO", scheduleTime);
                 }
             }
         });
@@ -60,11 +68,10 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 mapImage.setMode(MapImage.Mode.REGION);
                 dialogBox("Please Select Regions");
-                mapImage.setMode(MapImage.Mode.AUTO);
                 if (scheduleTime == null) {
-                    InstructionController.getInstance().addInstruction("START REGION", robotDatabase.getRobotValues(currentRobotId));
+                    instructionController.addInstruction("START REGION");
                 } else {
-                    InstructionController.getInstance().addInstruction("START REGION", robotDatabase.getRobotValues(currentRobotId), scheduleTime);
+                    instructionController.addInstruction("START REGION", scheduleTime);
                 }
             }
         });
@@ -74,9 +81,9 @@ public class MainFrame extends JFrame {
                 mapImage.setMode(MapImage.Mode.ROOM);
                 dialogBox("Please Select Rooms");
                 if (scheduleTime == null) {
-                    InstructionController.getInstance().addInstruction("START ROOM", robotDatabase.getRobotValues(currentRobotId));
+                    instructionController.addInstruction("START ROOM");
                 } else {
-                    InstructionController.getInstance().addInstruction("START ROOM", robotDatabase.getRobotValues(currentRobotId), scheduleTime);
+                    instructionController.addInstruction("START ROOM", scheduleTime);
                 }
             }
         });
@@ -84,24 +91,30 @@ public class MainFrame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                dialogBox("under construction ^^");
             }
         });
         accountButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                LoggerUI.test();
             }
         });
         selectRobot.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 currentRobotId = selectRobot.getSelectedIndex();
-                RobotInstance robotValues = robotDatabase.getRobotValues(currentRobotId);
-                batteryProgressBar.setValue(robotValues.getBattery());
-                binProgressBar.setValue(robotValues.getBinLevel());
-                jobProgressBar.setValue(robotValues.getJob().getJobCompleteness());
-                jobText.setText(robotValues.getJob().getJobType());
+                RMI_Implementation.Stats stats;
+                try {
+                    stats = instructionController.getRobotValues();
+                    batteryProgressBar.setValue(stats.getBattery());
+                    binProgressBar.setValue(stats.getBinLevel());
+                    jobProgressBar.setValue(stats.getJob().getJobCompleteness());
+                    jobText.setText(stats.getRobotName());
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
+
             }
         });
 
@@ -119,12 +132,7 @@ public class MainFrame extends JFrame {
         });
     }
 
-    private void setNewSchedule() {
-        scheduleTime = new Time(hour.getSelectedIndex(), minute.getSelectedIndex());
-        scheduleTime.printTime();
-    }
-
-    public static void main(String[] args) throws RemoteException {
+    public static void main(String[] args) throws Exception {
         try {
             UIManager.setLookAndFeel(
                     UIManager.getSystemLookAndFeelClassName());
@@ -134,7 +142,12 @@ public class MainFrame extends JFrame {
         mainFrame.setVisible(true);
     }
 
-    private void createUIComponents() {// place custom component creation code here1
+    private void setNewSchedule() {
+        scheduleTime = new Time(hour.getSelectedIndex(), minute.getSelectedIndex());
+        scheduleTime.printTime();
+    }
+
+    private void createUIComponents() {// place custom component creation code here
         ArrayList<String> hourArray = new ArrayList<>();
         ArrayList<String> minuteArray = new ArrayList<>();
         for (int i = 0; i <= 23; i++) {
@@ -154,16 +167,12 @@ public class MainFrame extends JFrame {
         jobText = new JLabel("Default");
     }
 
-    private void initNames() {
-        robotNames = new ArrayList<>();
-        robotNames.add("GLaDOS");
-        robotNames.add("Arturito");
-        robotNames.add("C-3PO");
-        robotNames.add("DestroyerOfWorlds3000");
-    }
-
     private void dialogBox(String msg) {
         JOptionPane.showMessageDialog(this, msg);
+    }
+
+    private void initInstructionController() throws Exception {
+        instructionController = InstructionController.getInstance();
     }
 
 }

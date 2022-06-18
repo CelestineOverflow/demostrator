@@ -4,11 +4,12 @@ import java.io.Serializable;
 import java.util.Random;
 
 public class Stats implements Serializable {
-    private String robotName;
-    private int battery;
-    private int binLevel;
+    private final String robotName;
+    private final int battery;
+    private final int binLevel;
     private Job job;
-    private Random random;
+    private final Random random;
+
     public Stats(String robotName) {
         this.robotName = robotName;
         random = new Random();
@@ -17,8 +18,12 @@ public class Stats implements Serializable {
         job = new Job("Empty", 0);
     }
 
-    public void setJob(Job job) {
-        this.job = job;
+    public static void printData(Stats stats) {
+        System.out.printf("|Robot Name = %s\n", stats.getRobotName());
+        System.out.printf("|battery = %d%%\n", stats.getBattery());
+        System.out.printf("|bin level = %d%%\n", stats.binLevel);
+        System.out.printf("|job = %s  Completed = %d%% Schedule = %s\n", stats.getJob().getJobType(), stats.getJob().getJobCompleteness(), stats.getJob().getScheduleTime().getString());
+        System.out.printf("\n---end--of--stats---\n");
     }
 
     public String getRobotName() {
@@ -37,11 +42,7 @@ public class Stats implements Serializable {
         return job;
     }
 
-    public static void printData(Stats stats) {
-        System.out.printf("|Robot Name = %s\n", stats.getRobotName());
-        System.out.printf("|battery = %d%%\n", stats.getBattery());
-        System.out.printf("|bin level = %d%%\n", stats.binLevel);
-        System.out.printf("|job = %s  Completed = %d%%\n", stats.getJob().getJobType(), stats.getJob().getJobCompleteness());
-        System.out.printf("\n---end--of--stats---\n");
+    public void setJob(Job job) {
+        this.job = job;
     }
 }

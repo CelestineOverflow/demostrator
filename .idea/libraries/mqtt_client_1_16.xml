@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="mqtt-client-1.16">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../Lab_6/apache-activemq-5.17.1/lib/extra/mqtt-client-1.16.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

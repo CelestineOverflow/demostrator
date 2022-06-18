@@ -1,8 +1,10 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="demostrator:jar">
+  <artifact name="demostrator:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/demostrator_jar</output-path>
-    <root id="archive" name="demostrator.jar">
-      <element id="module-output" name="demostrator" />
+    <root id="root">
+      <element id="archive" name="demostrator.jar">
+        <element id="module-output" name="demostrator" />
+      </element>
     </root>
   </artifact>
 </component>

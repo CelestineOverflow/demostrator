@@ -1,18 +1,19 @@
 package RMI_Implementation;
 
 import java.rmi.Naming;
-import java.rmi.server.UnicastRemoteObject;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.server.UnicastRemoteObject;
 
-public class RobotServer extends UnicastRemoteObject implements Server{
-    private Stats stats;
+public class RobotServer extends UnicastRemoteObject implements Server {
+    private final Stats stats;
 
     public RobotServer(String robotName) throws RemoteException {
         super(0);
         stats = new Stats(robotName);
     }
-    public static void main(String[] args) throws Exception{
+
+    public static void main(String[] args) throws Exception {
         System.out.println("RMI server started");
         try {
             LocateRegistry.createRegistry(1099);
@@ -25,6 +26,7 @@ public class RobotServer extends UnicastRemoteObject implements Server{
         Naming.rebind("//localhost/robotServer", robotServer);
         System.out.println("PeerServer bound in registry");
     }
+
     @Override
     public void sendInstruction(Job job) throws RemoteException {
         stats.setJob(job);

@@ -12,7 +12,8 @@ public class LoginManager {
     public void setPassword(String password) {
         this.password = password;
     }
-    public boolean isUserLogged(){
+
+    public boolean isUserLogged() {
         return !(userId == -1 || password == null);
     }
 }

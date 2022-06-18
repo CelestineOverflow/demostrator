@@ -7,46 +7,42 @@ import java.io.IOException;
 
 
 public class MapImage extends JPanel {
-    public static enum Mode {
-        DEFAULT,
-        AUTO,
-        REGION,
-        ROOM
-    }
+    private static final int DEFAULT_WIDTH = 600;
+    private static final int DEFAULT_HEIGHT = 702;
     private BufferedImage DEFAULT_IMAGE;
     private Mode currentMode;
-    private static int DEFAULT_WIDTH = 600;
-    private static int DEFAULT_HEIGHT = 702;
-    public MapImage(Mode mode){
+    public MapImage(Mode mode) {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         currentMode = Mode.DEFAULT;
         setBackground(Color.BLUE);
         try {
-            DEFAULT_IMAGE = ImageIO.read(new File("src/DirtMap.png"));
+            DEFAULT_IMAGE = ImageIO.read(new File("src/textures/DirtMap.png"));
         } catch (IOException ex) {
             System.out.println("Error loading pic");
         }
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(DEFAULT_IMAGE, 0, 0, this); // see javadoc for more info on the parameters
     }
-    public void setMode(Mode mode){
-        currentMode = mode;
-        updateImage();
-    }
 
-    private void updateImage() {
+    public void setMode(Mode mode) {
+        currentMode = mode;
         String path = "src/DirtMap.png";
-        switch (currentMode){
-            case DEFAULT :  path = new String("src/DirtMap.png");
+        switch (currentMode) {
+            case DEFAULT:
+                path = "src/textures/DirtMap.png";
                 break;
-            case AUTO:      path = new String("src/auto.png");
+            case AUTO:
+                path = "src/textures/auto.png";
                 break;
-            case REGION:    path = new String("src/region.png");
+            case REGION:
+                path = "src/textures/region.png";
                 break;
-            case ROOM:      path = new String("src/room.png");
+            case ROOM:
+                path = "src/textures/room.png";
                 break;
         }
         try {
@@ -55,5 +51,12 @@ public class MapImage extends JPanel {
             System.out.println("Error loading pic");
         }
         repaint();
+    }
+
+    public enum Mode {
+        DEFAULT,
+        AUTO,
+        REGION,
+        ROOM
     }
 }

@@ -3,9 +3,9 @@ package RMI_Implementation;
 import java.io.Serializable;
 
 public class Job implements Serializable {
+    private final Time scheduleTime;
     private String jobType;
     private int jobCompleteness;
-    private final Time scheduleTime;
 
     public Job(String jobType, int jobCompleteness, Time scheduleTime) {
         this.jobType = jobType;

@@ -9,39 +9,21 @@ import java.security.*;
 import java.util.ArrayList;
 
 public class EncryptedExchanger {
+    protected static String CREDENTIALS = "CREDENTIALS";
+    protected static String PUBLIC_KEY = "PUBLIC_KEY";
+    private static final int KEY_SIZE = 2048;
+    private static final String ALGORITHM_USED = "RSA";
     private KeyPairGenerator keyPairGenerator;
     private KeyPair keyPair;
-    private static int KEY_SIZE = 2048;
     private Signature signature;
-    private static String ALGORITHM_USED = "RSA";
-    protected static String CREDENTIALS  = "CREDENTIALS";
-    protected static String PUBLIC_KEY = "PUBLIC_KEY";
-    public EncryptedExchanger(){
+
+    public EncryptedExchanger() {
         initSignature();
         initKeyGenerator();
         initKeyPair();
     }
-    private void initKeyGenerator(){
-        try {
-            keyPairGenerator = KeyPairGenerator.getInstance(ALGORITHM_USED);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-    }
-    private void initKeyPair(){
-        keyPairGenerator.initialize(KEY_SIZE);
-        keyPair = keyPairGenerator.generateKeyPair();
-    }
 
-    public void initSignature(){
-        try {
-            signature = Signature.getInstance("SHA256WithDSA");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static byte[]  encrypt(String data, PublicKey publicKey) throws IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+    public static byte[] encrypt(String data, PublicKey publicKey) throws IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         Cipher cipher = Cipher.getInstance(ALGORITHM_USED);
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
         byte[] input = data.getBytes();
@@ -58,6 +40,27 @@ public class EncryptedExchanger {
         return decrypted;
     }
 
+    private void initKeyGenerator() {
+        try {
+            keyPairGenerator = KeyPairGenerator.getInstance(ALGORITHM_USED);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initKeyPair() {
+        keyPairGenerator.initialize(KEY_SIZE);
+        keyPair = keyPairGenerator.generateKeyPair();
+    }
+
+    public void initSignature() {
+        try {
+            signature = Signature.getInstance("SHA256WithDSA");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+
     public ArrayList<String> decryptData(Data data) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         ArrayList<String> result = new ArrayList<>();
         String username = decrypt(data.getUsername(), keyPair.getPrivate());
@@ -72,7 +75,7 @@ public class EncryptedExchanger {
         return result;
     }
 
-    public PublicKey getPublicKey(){
+    public PublicKey getPublicKey() {
         return keyPair.getPublic();
     }
 

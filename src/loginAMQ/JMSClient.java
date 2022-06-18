@@ -5,18 +5,17 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import javax.jms.Connection;
 import javax.jms.JMSException;
 import javax.jms.Session;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class JMSClient {
     protected final String url = "tcp://localhost:61616";
     protected final String username = "admin";
     protected final String password = "admin";
-    private ActiveMQConnectionFactory connectionFactory;
     public boolean connected;
     protected Connection connection;
     protected Session session;
-    public JMSClient()  {
+    private ActiveMQConnectionFactory connectionFactory;
+
+    public JMSClient() {
         try {
             connectionFactory = new ActiveMQConnectionFactory(url);
             // Set the trusted packages to move back and forth on the ActiveMQ JMS service.
@@ -25,6 +24,7 @@ public abstract class JMSClient {
             e.printStackTrace();
         }
     }
+
     public void connect(Object instanceName) {
         try {
             connection = connectionFactory.createConnection(username, password);
@@ -38,7 +38,8 @@ public abstract class JMSClient {
         }
 
     }
-    public void disconnect(Object instanceName){
+
+    public void disconnect(Object instanceName) {
         try {
             connection.close();
             connected = true;

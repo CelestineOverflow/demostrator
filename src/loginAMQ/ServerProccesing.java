@@ -1,20 +1,24 @@
 package loginAMQ;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.jms.*;
-import java.security.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.util.ArrayList;
 
-public class ServerProccesing extends JMSClient{
+public class ServerProccesing extends JMSClient {
     private Data processData;
-    private EncryptedExchanger encryptedExchanger;
+    private final EncryptedExchanger encryptedExchanger;
+
     public ServerProccesing() throws NoSuchAlgorithmException {
         super();
         encryptedExchanger = new EncryptedExchanger();
     }
 
-    public PublicKey getPublicKey(){
+    public PublicKey getPublicKey() {
         return encryptedExchanger.getPublicKey();
     }
 
@@ -27,24 +31,25 @@ public class ServerProccesing extends JMSClient{
         MessageConsumer consumer = session.createConsumer(destination);
         Message message = consumer.receive();
         message.acknowledge();
-        if(message instanceof ObjectMessage) {
+        if (message instanceof ObjectMessage) {
             ObjectMessage objectMessage = (ObjectMessage) message;
             Data data = (Data) objectMessage.getObject();
-            if(data.getPublicKey().hashCode()!=encryptedExchanger.getPublicKey().hashCode()){
+            if (data.getPublicKey().hashCode() != encryptedExchanger.getPublicKey().hashCode()) {
                 System.err.println("failed key");
-            } else{
+            } else {
                 System.out.println("Correct Key");
                 result = encryptedExchanger.decryptData(data);
 
             }
         }
         super.disconnect(this);
-        if(result.get(0).equals("admin") && result.get(1).equals("1234")){
+        if (result.get(0).equals("admin") && result.get(1).equals("1234")) {
             return 0;
-        } else{
+        } else {
             return 1;
         }
     }
+
     public void sendKey() throws JMSException {
         super.connect(this);
         Destination destination = session.createQueue(EncryptedExchanger.PUBLIC_KEY);

@@ -11,6 +11,7 @@ public class MapImage extends JPanel {
     private static final int DEFAULT_HEIGHT = 702;
     private BufferedImage DEFAULT_IMAGE;
     private Mode currentMode;
+
     public MapImage(Mode mode) {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         currentMode = Mode.DEFAULT;

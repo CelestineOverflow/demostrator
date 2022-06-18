@@ -9,11 +9,11 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 
-public class Data implements Serializable{
+public class Data implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final byte[] username;
     private final byte[] password;
     private final PublicKey publicKey;
-    private static final long serialVersionUID = 1L;
 
     public Data(String username, String password, PublicKey publicKey) throws IllegalBlockSizeException, UnsupportedEncodingException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         this.publicKey = publicKey;

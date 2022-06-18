@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class InstructionController {
     private static InstructionController instructionController;
-    ArrayList<String> instructionBuffer;
     private final InstructionClient instructionClient;
+    ArrayList<String> instructionBuffer;
 
     private InstructionController() throws Exception {
         instructionBuffer = new ArrayList<>();

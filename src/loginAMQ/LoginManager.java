@@ -1,9 +1,9 @@
 package loginAMQ;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.jms.*;
-import javax.swing.*;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -12,7 +12,7 @@ import java.security.PublicKey;
 public class LoginManager extends JMSClient {
     private String username = "Celeste";
     private String password = "123451233136";
-    private EncryptedExchanger encryptedExchanger;
+    private final EncryptedExchanger encryptedExchanger;
     private PublicKey externalKey;
 
     public LoginManager(String username, String password) {
@@ -37,7 +37,7 @@ public class LoginManager extends JMSClient {
         MessageConsumer consumer = session.createConsumer(destination);
         Message message = consumer.receive();
         message.acknowledge();
-        if(message instanceof ObjectMessage) {
+        if (message instanceof ObjectMessage) {
             ObjectMessage objectMessage = (ObjectMessage) message;
             PublicKey data = (PublicKey) objectMessage.getObject();
             externalKey = data;

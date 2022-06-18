@@ -7,8 +7,8 @@ public class Stats implements Serializable {
     private final String robotName;
     private final int battery;
     private final int binLevel;
-    private Job job;
     private final Random random;
+    private Job job;
 
     public Stats(String robotName) {
         this.robotName = robotName;
